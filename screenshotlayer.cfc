@@ -63,7 +63,6 @@ component output="false" displayname="Screenshotlayer.cfc"  {
     var filteredParams = { };
     var paramKeys = structKeyArray( params );
     for ( var paramKey in paramKeys ) {
-      //maybe add line to exclude false params and check to see if the param itself is valid (only if invalid params throw errors)
       if ( structKeyExists( params, paramKey ) && !isNull( params[ paramKey ] ) ) {
         filteredParams[ paramKey ] = params[ paramKey ];
       }
@@ -72,50 +71,8 @@ component output="false" displayname="Screenshotlayer.cfc"  {
     return filteredParams;
   }
 
-  private any function getValidatedParam( required string paramName, required any paramValue, boolean validate = true ) {
-    // only simple values
-    if ( !isSimpleValue( paramValue ) ) throwError( "'#paramName#' is not a simple value." );
-
-    // if not validation just result trimmed value
-    if ( !validate ) {
-      return trim( paramValue );
-    }
-
-    // integer
-    if ( arrayFindNoCase( variables.integerFields, paramName ) ) {
-      if ( !isInteger( paramValue ) ) {
-        throwError( "field '#paramName#' requires an integer value" );
-      }
-      return paramValue;
-    }
-    // numeric
-    if ( arrayFindNoCase( variables.numericFields, paramName ) ) {
-      if ( !isNumeric( paramValue ) ) {
-        throwError( "field '#paramName#' requires a numeric value" );
-      }
-      return paramValue;
-    }
-
-    // boolean
-    if ( arrayFindNoCase( variables.booleanFields, paramName ) ) {
-      return ( paramValue ? "true" : "false" );
-    }
-
-    // timestamp
-    if ( arrayFindNoCase( variables.timestampFields, paramName ) ) {
-      return parseUTCTimestampField( paramValue, paramName );
-    }
-
-    // default is string
-    return trim( paramValue );
-  }
-
   private string function encodeurl( required string str ) {
     return replacelist( urlEncodedFormat( str, "utf-8" ), "%2D,%2E,%5F,%7E", "-,.,_,~" );
-  }
-
-  private void function throwError( required string errorMessage ) {
-    throw( type = "Screenshotlayer", message = "(screenshotlayer.cfc) " & errorMessage );
   }
 
 }
