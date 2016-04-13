@@ -30,7 +30,7 @@ component output="false" displayname="Screenshotlayer.cfc"  {
     }
 
     if ( isObject( apiResponse.fileContent ) ) {
-      structInsert( result, "image", apiResponse.fileContent );
+      structInsert( result, "image", imagenew( apiResponse.fileContent.toByteArray() ) );
       //provide error key in response, for more consistent handling
       structAppend( result, {"success" : "YES"}, true);
     } else {
@@ -41,7 +41,7 @@ component output="false" displayname="Screenshotlayer.cfc"  {
   }
 
   private any function makeHttpRequest( required string urlPath, required struct params, required string method ) {
-    var http = new http( url = urlPath, method = method, timeout = variables.httpTimeout );
+    var http = new http( url = urlPath, method = method, timeout = variables.httpTimeout, file="screenshot.png" );
 
     // adding a user agent header so that Adobe ColdFusion doesn't get mad about empty HTTP posts
     http.addParam( type = "header", name = "User-Agent", value = "screenshotlayer.cfc" );
