@@ -1,6 +1,6 @@
 component output="false" displayname="Screenshotlayer.cfc"  {
 
-  public any function init( required string access_key, string secret_key = "", string baseUrl = "http://api.screenshotlayer.com/api/capture", numeric httpTimeout = 60, boolean includeRaw = true ) {
+  public any function init( required string access_key, string secret_key = "", string baseUrl = "http://api.screenshotlayer.com/api/capture", numeric httpTimeout = 60, boolean includeRaw = false ) {
 
     structAppend( variables, arguments );
     return this;
